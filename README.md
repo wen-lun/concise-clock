@@ -1,11 +1,5 @@
 # 效果图
-<div style="width:910px">
-    <img src="img/demo1.gif" width="177"  />
-    <img src="img/demo2.gif" width="177"  />
-    <img src="img/demo3.gif" width="177"  />
-    <img src="img/demo4.gif" width="177"  />
-    <img src="img/demo5.gif" width="177"  />
-</div>
+<img src="img/demo1.gif" width="177"  /><img src="img/demo2.gif" width="177"  /><img src="img/demo3.gif" width="177"  /><img src="img/demo4.gif" width="177"  /><img src="img/demo5.gif" width="177"  />
 
 # 1.安装
 * &lt;script&gt;标签引入"dist/clock.js"或"dist/clock.min.js"
