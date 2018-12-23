@@ -1,5 +1,11 @@
 # 效果图
-<img src="img/demo1.gif" width="179"  /><img src="img/demo2.gif" width="179"  /><img src="img/demo3.gif" width="179"  /><img src="img/demo4.gif" width="179"  /><img src="img/demo5.gif" width="179"  />
+<div>
+    <img src="img/demo1.gif" width="179"  />
+    <img src="img/demo2.gif" width="179"  />
+    <img src="img/demo3.gif" width="179"  />
+    <img src="img/demo4.gif" width="179"  />
+    <img src="img/demo5.gif" width="179"  />
+</div>
 
 # 1.安装
 * &lt;script&gt;标签引入"dist/clock.js"或"dist/clock.min.js"
@@ -64,7 +70,8 @@ new Clock(
 * 效果
 <br/>
 <div>
-    <img src="img/demo4.gif" width="300" /><img src="img/demo5.gif" width="300" />
+    <img src="img/demo4.gif" width="300" />
+    <img src="img/demo5.gif" width="300" />
 </div>
 # 3.参数
 ## 3.1 Clock(canvas, options)
