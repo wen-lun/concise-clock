@@ -63,8 +63,7 @@ new Clock(
 ```
 * 效果
 <br/>
-<img src="img/demo4.gif" width="300"  /><img src="img/demo5.gif" width="300"  />
-
+<img src="img/demo4.gif" width="300" /><img src="img/demo5.gif" width="300" />
 
 # 3.参数
 ## 3.1 Clock(canvas, options)
