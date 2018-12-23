@@ -1,5 +1,5 @@
 # 效果图
-<img src="img/demo1.gif" width="195"  /><img src="img/demo2.gif" width="195"  /><img src="img/demo3.gif" width="195"  /><img src="img/demo4.gif" width="195"  /><img src="img/demo5.gif" width="195"  />
+<img src="img/demo1.gif" width="179"  /><img src="img/demo2.gif" width="179"  /><img src="img/demo3.gif" width="179"  /><img src="img/demo4.gif" width="179"  /><img src="img/demo5.gif" width="179"  />
 
 # 1.安装
 * &lt;script&gt;标签引入"dist/clock.js"或"dist/clock.min.js"
