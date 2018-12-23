@@ -63,8 +63,9 @@ new Clock(
 ```
 * 效果
 <br/>
-<img src="img/demo4.gif" width="300" /><img src="img/demo5.gif" width="300" />
-
+<div>
+    <img src="img/demo4.gif" width="300" /><img src="img/demo5.gif" width="300" />
+</div>
 # 3.参数
 ## 3.1 Clock(canvas, options)
 * canvas：顾名思义，canvas是一个HTMLCanvasElement对象，是用来显示模拟时钟的容器。
