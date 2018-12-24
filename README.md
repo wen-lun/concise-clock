@@ -90,6 +90,7 @@ new Clock(
     hourHandColor: "black",//时针颜色
     backgroundMode: "full",//背景图显示模式
     backgroundAlpha: 0.5,//背景色透明度
+    showShadow: true,//是否显示阴影
     onload: undefined,//图片加载完成回调，回调参数当前Clock对象
 }
 ```
