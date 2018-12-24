@@ -62,6 +62,7 @@ var Clock = /** @class */ (function () {
             minuteHandColor: "#666",
             hourHandColor: "black",
             backgroundMode: "full",
+            showShadow: true,
             backgroundAlpha: 0.5,
         };
         this.interval = null;
@@ -146,12 +147,14 @@ var Clock = /** @class */ (function () {
         return (Math.PI / 180) * angle;
     };
     /**
-     * 极坐标(极轴水平向右，角度正方向，顺时针)转画布坐标
+     * 极坐标转画布坐标（ps:此极坐标极轴水平向上，角度正方向顺时针）
      * @param r 当前点到中心点的长度
      * @param radian 弧度
      */
     Clock.prototype.polarCoordinates2canvasCoordinates = function (r, radian) {
-        //极坐标转直角坐标（x轴水平向右，y轴竖直向下）
+        //极轴水平向上极坐标转极轴水平向右极坐标
+        radian -= Math.PI * 0.5; //角度向右旋转90度即可
+        //极轴水平向右极坐标转直角坐标（x轴水平向右，y轴竖直向下）
         var x = r * Math.cos(radian);
         var y = r * Math.sin(radian);
         //直角坐标转画布坐标
@@ -245,7 +248,7 @@ var Clock = /** @class */ (function () {
     };
     /**绘制表盘 */
     Clock.prototype.drawDial = function (ctx) {
-        var _a = this.options, padding = _a.padding, borderWidth = _a.borderWidth, borderColor = _a.borderColor, borderImage = _a.borderImage, scaleColor = _a.scaleColor, backgroundColor = _a.backgroundColor, backgroundImage = _a.backgroundImage, backgroundMode = _a.backgroundMode, backgroundAlpha = _a.backgroundAlpha, _b = _a.showShadow, showShadow = _b === void 0 ? true : _b;
+        var _a = this.options, padding = _a.padding, borderWidth = _a.borderWidth, borderColor = _a.borderColor, borderImage = _a.borderImage, scaleColor = _a.scaleColor, backgroundColor = _a.backgroundColor, backgroundImage = _a.backgroundImage, backgroundMode = _a.backgroundMode, backgroundAlpha = _a.backgroundAlpha, showShadow = _a.showShadow;
         var hours = this.hours;
         var halfSize = this.halfSize;
         var shadowBlur = 10;
@@ -277,7 +280,7 @@ var Clock = /** @class */ (function () {
         ctx.beginPath();
         ctx.save();
         if (backgroundImage && this.backgroundImage) { //背景图
-            var _c = this.backgroundImage, width = _c.width, height = _c.height;
+            var _b = this.backgroundImage, width = _b.width, height = _b.height;
             var r = "full" == backgroundMode ? insideR : insideR - this.largeScale - this.hourFontSize - 15;
             ctx.globalAlpha = backgroundAlpha;
             ctx.arc(x, y, r, 0, 2 * Math.PI);
@@ -294,9 +297,9 @@ var Clock = /** @class */ (function () {
         ctx.restore();
         //--------刻度
         var step = 360 / 60; //中心点转动的角度
-        //顺时针，极坐标 -90度(12点)递增到 270度(也是12点)
+        //顺时针，0度(12点)递增到 360度(也是12点)
         var hourStep = 0;
-        for (var angle = -90; angle < 270; angle += step) {
+        for (var angle = 0; angle < 360; angle += step) {
             var radian = this.angle2radian(angle);
             var start = this.polarCoordinates2canvasCoordinates(insideR, radian);
             var len = 0 == angle % 5 ? this.largeScale : this.smallScale;
@@ -334,8 +337,7 @@ var Clock = /** @class */ (function () {
         this.drawNeedle(ctx, time.getSeconds() * 6, secondHandColor, this.secondHandLen);
     };
     Clock.prototype.drawNeedle = function (ctx, angle, color, len) {
-        //减90度是因为angle是按极轴为竖直向上来计算的，想右旋转90度转成需要的极坐标
-        var radian = this.angle2radian(angle - 90);
+        var radian = this.angle2radian(angle);
         var start = this.polarCoordinates2canvasCoordinates(-this.headLen, radian);
         var end = this.polarCoordinates2canvasCoordinates(len, radian);
         ctx.beginPath();
