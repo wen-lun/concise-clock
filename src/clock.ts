@@ -14,6 +14,7 @@ class Clock {
         minuteHandColor: "#666",
         hourHandColor: "black",
         backgroundMode: "full",
+        showShadow: true,
         backgroundAlpha: 0.5,
     }
     private interval: any = null;
@@ -91,12 +92,14 @@ class Clock {
     }
 
     /**
-     * 极坐标(极轴水平向右，角度正方向，顺时针)转画布坐标
+     * 极坐标转画布坐标（ps:此极坐标极轴水平向上，角度正方向顺时针）
      * @param r 当前点到中心点的长度
      * @param radian 弧度
      */
     private polarCoordinates2canvasCoordinates(r: number, radian: number): Point {
-        //极坐标转直角坐标（x轴水平向右，y轴竖直向下）
+        //极轴水平向上极坐标转极轴水平向右极坐标
+        radian -= Math.PI * 0.5;//角度向右旋转90度即可
+        //极轴水平向右极坐标转直角坐标（x轴水平向右，y轴竖直向下）
         let x = r * Math.cos(radian);
         let y = r * Math.sin(radian);
         //直角坐标转画布坐标
@@ -192,7 +195,7 @@ class Clock {
 
     /**绘制表盘 */
     private drawDial(ctx: CanvasRenderingContext2D) {
-        const { padding, borderWidth, borderColor, borderImage, scaleColor, backgroundColor, backgroundImage, backgroundMode, backgroundAlpha, showShadow = true } = this.options;
+        const { padding, borderWidth, borderColor, borderImage, scaleColor, backgroundColor, backgroundImage, backgroundMode, backgroundAlpha, showShadow } = this.options;
         const hours = this.hours;
         const halfSize = this.halfSize;
         const shadowBlur = 10;
@@ -243,9 +246,9 @@ class Clock {
 
         //--------刻度
         let step = 360 / 60;//中心点转动的角度
-        //顺时针，极坐标 -90度(12点)递增到 270度(也是12点)
+        //顺时针，0度(12点)递增到 360度(也是12点)
         let hourStep = 0;
-        for (let angle = -90; angle < 270; angle += step) {
+        for (let angle = 0; angle < 360; angle += step) {
             const radian = this.angle2radian(angle);
             const start = this.polarCoordinates2canvasCoordinates(insideR, radian);
             const len = 0 == angle % 5 ? this.largeScale : this.smallScale;
@@ -285,9 +288,7 @@ class Clock {
     }
 
     private drawNeedle(ctx: CanvasRenderingContext2D, angle: number, color: string, len: number) {
-
-        //减90度是因为angle是按极轴为竖直向上来计算的，想右旋转90度转成需要的极坐标
-        const radian = this.angle2radian(angle - 90);
+        const radian = this.angle2radian(angle);
         const start = this.polarCoordinates2canvasCoordinates(-this.headLen, radian);
         const end = this.polarCoordinates2canvasCoordinates(len, radian);
         ctx.beginPath();
