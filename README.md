@@ -2,8 +2,10 @@
 <img src="https://raw.githubusercontent.com/destiny-wenlun/concise-clock/master/img/demo1.gif" width="177"  /><img src="https://raw.githubusercontent.com/destiny-wenlun/concise-clock/master/img/demo2.gif" width="177"  /><img src="https://raw.githubusercontent.com/destiny-wenlun/concise-clock/master/img/demo3.gif" width="177"  /><img src="https://raw.githubusercontent.com/destiny-wenlun/concise-clock/master/img/demo4.gif" width="177"  /><img src="https://raw.githubusercontent.com/destiny-wenlun/concise-clock/master/img/demo5.gif" width="177"  />
 
 # 更新日志
->1、size默认值修改为300  
->2、borderWidth默认值修改为15
+
+>1、构造方法第一个参数支持传入canvas dom对象的id，既可以传canvas dom对象也可以传此dom对象的id。  
+>2、增加setOptions方法，方便动态更新模拟时钟的属性。  
+>3、修复传入options没有验证属性值的BUG，若传入的options的某些属性是undefined，那么就过滤掉该属性。
 
 # 1.安装
 * &lt;script&gt;标签引入"dist/clock.js"或"dist/clock.min.js"
@@ -12,7 +14,12 @@
 ## 2.1 最简单使用
 * 代码
 ```javascript
+//方法1，传入canvas dom对象
 new Clock(document.getElementById("canvas")).run();
+
+//方法2，传入canvas dom对象的id
+new Clock("canvas").run();
+
 ```
 * 效果  
 <br/>
@@ -74,8 +81,8 @@ new Clock(
 
 # 3.参数
 ## 3.1 Clock(canvas, options)
-* canvas：顾名思义，canvas是一个HTMLCanvasElement对象，是用来显示模拟时钟的容器。
-* options：options有默认值，可不传，但如果你想自定义一些漂亮的样式，就可以使用options参数。
+* canvas：用来显示模拟时钟的容器。可以是一个HTMLCanvasElement对象，也可以是一个HTMLCanvasElement对象的id。
++ options：options有默认值，可不传，但如果你想自定义一些漂亮的样式，就可以使用options参数。
 ## 3.2 options默认值
 ```javascript
 {
@@ -115,17 +122,27 @@ new Clock(
         }
     }
 );
-
 ```
+
 * run(): 执行此方法，模拟时钟就会每隔1秒，渲染一次界面，此方法返回值是当前对象。例如：
 ```javascript
 new Clock(document.getElementById("canvas")).run();
 ```
+
 * stop(): 执行此方法，可停止每隔1秒渲染界面。例如：
 ```javascript
 //运行一个模拟时钟，4秒后停止
 var clock = new Clock(document.getElementById("canvas")).run();
 setTimeout(function(){
     clock.stop();
+}, 4000);
+```
+
+* setOptions(options): 执行此方法，动态改变模拟时钟的一些属性。例如：
+```javascript
+//运行一个模拟时钟，4秒后修改模拟时钟的尺寸为500，可参考demo/demo2.html
+var clock = new Clock(document.getElementById("canvas")).run();
+setTimeout(function(){
+    clock.setOptions({size: 500});
 }, 4000);
 ```
