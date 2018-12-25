@@ -1,19 +1,24 @@
 {
   "name": "concise-clock",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "一个基于h5 canvas的模拟时钟javascript程序",
   "main": "lib/clock.js",
-  "types": "lib/index.d.ts",
+  "types": "lib/clock.d.ts",
+  "files": [
+    "lib",
+    "src"
+  ],
   "scripts": {
     "start": "tsc -watch",
     "es": "tsc --lib dom,es2015 --strict false --target es2017  src/clock.ts",
-    "release": "tsc --lib dom,es2015 --strict false --target es5 --declaration true --declarationDir release/lib --outDir release/lib src/clock.ts",
+    "lib": "tsc --lib dom,es2015 --strict false --target es5 --declaration true --declarationDir lib --outDir lib src/clock.ts",
     "uglify": "uglifyjs dist/clock.js -o dist/clock.min.js",
     "build": "webpack & npm run uglify"
   },
   "keywords": [
     "js",
     "h5",
+    "html5",
     "canvas",
     "clockwise",
     "clock",
@@ -27,5 +32,13 @@
     "typescript": "^3.2.2",
     "uglify-js": "^3.4.9",
     "webpack": "^3.3.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/destiny-wenlun/concise-clock.git"
+  },
+  "bugs": {
+    "url": "https://github.com/destiny-wenlun/concise-clock/issues"
+  },
+  "homepage": "https://github.com/destiny-wenlun/concise-clock#readme"
 }
