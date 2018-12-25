@@ -81,24 +81,27 @@ export default class Clock {
     private dialCanvas: HTMLCanvasElement = document.createElement("canvas");
     private dialCtx = this.dialCanvas.getContext("2d")!;
 
-    constructor(canvas: HTMLCanvasElement, options: Option = {}) {
-        this.options = { ...this.options, ...options };
+    constructor(canvas: HTMLCanvasElement | string, options: Option = {}) {
         if (!canvas) {
             throw new Error("请传入canvas参数！");
         }
-        if (!(canvas instanceof HTMLCanvasElement)) {
+        let container: any = canvas;
+        if ("string" == typeof canvas) {
+            container = document.getElementById(canvas);
+        }
+        if (!(container instanceof HTMLCanvasElement)) {
             throw new Error("传入的canvas参数不是一个HTMLCanvasElement对象！");
         }
-        this.init(canvas);
+        this.container = container;
+        this.ctx = container.getContext("2d")!;
+        this.setOptions(options);
     }
 
-    private async init(container: HTMLCanvasElement) {
+    private async init() {
         const { size, borderWidth, borderImage, padding, scaleType = "arabic", backgroundImage, onload } = this.options;
         this.halfSize = size! * 0.5;
-        this.container = container!;
-        this.ctx = container!.getContext("2d")!;
-        this.dialCanvas.width = this.container.width = size!;
-        this.dialCanvas.height = this.container.height = size!;
+        this.dialCanvas.width = this.container!.width = size!;
+        this.dialCanvas.height = this.container!.height = size!;
         //大刻度线的长度为内圈半径的十二分之一
         this.largeScale = (this.halfSize - padding! - borderWidth!) / 12;
         //小刻度线的长度为大刻度线的一半
@@ -113,6 +116,8 @@ export default class Clock {
             this.hours = ["XII", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI"];
         } else if ("arabic" == scaleType) {
             this.hours = ["12", "1", "2", "3", "4", "5", "6", "7", '8', "9", "10", "11"];
+        } else {
+            this.hours = [];
         }
 
         if (borderImage) {
@@ -357,6 +362,22 @@ export default class Clock {
             ctx.fill();
         }
         ctx.restore();
+    }
+
+    /**
+     * 更新options，调用此方法可更新模拟时钟的一些属性
+     * @param options 
+     */
+    public setOptions(options: Option = {}) {
+        let opts: any = {};
+        Object.keys(options).forEach(key => {
+            const val = (options as any)[key];
+            if (val !== undefined) {//过滤掉值为undefined的
+                opts[key] = val;
+            }
+        });
+        this.options = { ...this.options, ...opts };
+        this.init();
     }
 
     /**

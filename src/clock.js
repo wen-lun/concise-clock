@@ -35,20 +35,23 @@ export default class Clock {
         /**表盘 */
         this.dialCanvas = document.createElement("canvas");
         this.dialCtx = this.dialCanvas.getContext("2d");
-        this.options = Object.assign({}, this.options, options);
         if (!canvas) {
             throw new Error("请传入canvas参数！");
         }
-        if (!(canvas instanceof HTMLCanvasElement)) {
+        let container = canvas;
+        if ("string" == typeof canvas) {
+            container = document.getElementById(canvas);
+        }
+        if (!(container instanceof HTMLCanvasElement)) {
             throw new Error("传入的canvas参数不是一个HTMLCanvasElement对象！");
         }
-        this.init(canvas);
-    }
-    async init(container) {
-        const { size, borderWidth, borderImage, padding, scaleType = "arabic", backgroundImage, onload } = this.options;
-        this.halfSize = size * 0.5;
         this.container = container;
         this.ctx = container.getContext("2d");
+        this.setOptions(options);
+    }
+    async init() {
+        const { size, borderWidth, borderImage, padding, scaleType = "arabic", backgroundImage, onload } = this.options;
+        this.halfSize = size * 0.5;
         this.dialCanvas.width = this.container.width = size;
         this.dialCanvas.height = this.container.height = size;
         //大刻度线的长度为内圈半径的十二分之一
@@ -65,6 +68,9 @@ export default class Clock {
         }
         else if ("arabic" == scaleType) {
             this.hours = ["12", "1", "2", "3", "4", "5", "6", "7", '8', "9", "10", "11"];
+        }
+        else {
+            this.hours = [];
         }
         if (borderImage) {
             this.borderPattern = await this.createPattern(this.dialCtx, borderImage, "repeat");
@@ -297,6 +303,21 @@ export default class Clock {
             ctx.fill();
         }
         ctx.restore();
+    }
+    /**
+     * 更新options，调用此方法可更新模拟时钟的一些属性
+     * @param options
+     */
+    setOptions(options = {}) {
+        let opts = {};
+        Object.keys(options).forEach(key => {
+            const val = options[key];
+            if (val !== undefined) { //过滤掉值为undefined的
+                opts[key] = val;
+            }
+        });
+        this.options = Object.assign({}, this.options, opts);
+        this.init();
     }
     /**
      * 显示一个时间
