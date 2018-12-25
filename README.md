@@ -1,6 +1,10 @@
 # 效果图
 <img src="img/demo1.gif" width="177"  /><img src="img/demo2.gif" width="177"  /><img src="img/demo3.gif" width="177"  /><img src="img/demo4.gif" width="177"  /><img src="img/demo5.gif" width="177"  />
 
+# 更新日志
+>1、size默认值修改为300  
+>2、borderWidth默认值修改为15
+
 # 1.安装
 * &lt;script&gt;标签引入"dist/clock.js"或"dist/clock.min.js"
 + 使用npm，运行命令：npm install -D concise-clock
@@ -75,9 +79,9 @@ new Clock(
 ## 3.2 options默认值
 ```javascript
 {
-    size: 500,//模拟时钟尺寸(px)
+    size: 300,//模拟时钟尺寸(px)
     padding: 5,//内边距
-    borderWidth: 20,//边框宽度
+    borderWidth: 15,//边框宽度
     borderColor: "black",//边框颜色
     borderImage: undefined,//边框图，优先级高于borderColor
     scaleType: "arabic",//刻度值类型(arabic、roman、none),arabic:阿拉伯数字;roman:罗马数字; none:不显示;
