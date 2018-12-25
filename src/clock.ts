@@ -2,9 +2,9 @@ class Clock {
 
     /**默认选项 */
     private options: Option = {
-        size: 500,
+        size: 300,
         padding: 5,
-        borderWidth: 20,
+        borderWidth: 15,
         borderColor: "black",
         scaleType: "arabic",
         scaleColor: "#666",
