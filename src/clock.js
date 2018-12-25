@@ -1,4 +1,4 @@
-class Clock {
+export default class Clock {
     constructor(canvas, options = {}) {
         /**默认选项 */
         this.options = {
@@ -347,3 +347,4 @@ class Clock {
         }
     }
 }
+window.Clock = Clock;
