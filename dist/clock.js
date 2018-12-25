@@ -50,9 +50,9 @@ var Clock = /** @class */ (function () {
         if (options === void 0) { options = {}; }
         /**默认选项 */
         this.options = {
-            size: 500,
+            size: 300,
             padding: 5,
-            borderWidth: 20,
+            borderWidth: 15,
             borderColor: "black",
             scaleType: "arabic",
             scaleColor: "#666",
