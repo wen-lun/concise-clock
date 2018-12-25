@@ -27,13 +27,11 @@
     <canvas id="demo3"></canvas>
     <canvas id="demo4"></canvas>
     <script type="text/javascript">
-        var size = 400;
-        new Clock(document.getElementById("demo1"), { size: size }).run();
+        new Clock(document.getElementById("demo1")).run();
 
         new Clock(
             document.getElementById("demo2"),
             {
-                size: size,
                 scaleType: "roman",//显示罗马数字
                 borderColor: "brown",//边框颜色
                 backgroundColor: "black",//表盘背景色
@@ -47,7 +45,6 @@
         new Clock(
             document.getElementById("demo3"),
             {
-                size: size,
                 borderImage: "./img/border.png",
                 backgroundImage: "./img/bg.jpg"
             }
@@ -56,7 +53,6 @@
         new Clock(
             document.getElementById("demo4"),
             {
-                size: size,
                 borderImage: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1545553805386&di=ec656215a2958d617ef30631e96304e0&imgtype=0&src=http%3A%2F%2Fimg1.ali213.net%2Fshouyou%2Fupload%2Fimage%2F2018%2F07%2F09%2F584_2018070952816881.png",
                 backgroundImage: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1545553773235&di=1c768f80fc088c2edc20fa75af77c515&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201607%2F03%2F20160703164252_2WySB.jpeg"
             }
