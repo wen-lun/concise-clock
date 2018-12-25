@@ -1,6 +1,6 @@
 {
   "name": "concise-clock",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "一个基于h5 canvas的模拟时钟javascript程序",
   "main": "lib/clock.js",
   "types": "lib/clock.d.ts",
@@ -13,7 +13,8 @@
     "es": "tsc --lib dom,es2015 --strict false --target es2017  src/clock.ts",
     "lib": "tsc --lib dom,es2015 --strict false --target es5 --declaration true --declarationDir lib --outDir lib src/clock.ts",
     "uglify": "uglifyjs dist/clock.js -o dist/clock.min.js",
-    "build": "webpack & npm run uglify"
+    "build": "webpack & npm run uglify",
+    "all": "npm run build & npm run es & npm run lib"
   },
   "keywords": [
     "js",
