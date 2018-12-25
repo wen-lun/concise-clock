@@ -1,6 +1,6 @@
 {
   "name": "concise-clock",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "一个基于h5 canvas的模拟时钟javascript程序",
   "main": "lib/clock.js",
   "types": "lib/index.d.ts",
