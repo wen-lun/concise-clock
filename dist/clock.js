@@ -154,16 +154,21 @@ var Clock = /** @class */ (function () {
         /**表盘 */
         this.dialCanvas = document.createElement("canvas");
         this.dialCtx = this.dialCanvas.getContext("2d");
-        this.options = __assign({}, this.options, options);
         if (!canvas) {
             throw new Error("请传入canvas参数！");
         }
-        if (!(canvas instanceof HTMLCanvasElement)) {
+        var container = canvas;
+        if ("string" == typeof canvas) {
+            container = document.getElementById(canvas);
+        }
+        if (!(container instanceof HTMLCanvasElement)) {
             throw new Error("传入的canvas参数不是一个HTMLCanvasElement对象！");
         }
-        this.init(canvas);
+        this.container = container;
+        this.ctx = container.getContext("2d");
+        this.setOptions(options);
     }
-    Clock.prototype.init = function (container) {
+    Clock.prototype.init = function () {
         return __awaiter(this, void 0, void 0, function () {
             var _a, size, borderWidth, borderImage, padding, _b, scaleType, backgroundImage, onload, _c, _d;
             return __generator(this, function (_e) {
@@ -171,8 +176,6 @@ var Clock = /** @class */ (function () {
                     case 0:
                         _a = this.options, size = _a.size, borderWidth = _a.borderWidth, borderImage = _a.borderImage, padding = _a.padding, _b = _a.scaleType, scaleType = _b === void 0 ? "arabic" : _b, backgroundImage = _a.backgroundImage, onload = _a.onload;
                         this.halfSize = size * 0.5;
-                        this.container = container;
-                        this.ctx = container.getContext("2d");
                         this.dialCanvas.width = this.container.width = size;
                         this.dialCanvas.height = this.container.height = size;
                         //大刻度线的长度为内圈半径的十二分之一
@@ -189,6 +192,9 @@ var Clock = /** @class */ (function () {
                         }
                         else if ("arabic" == scaleType) {
                             this.hours = ["12", "1", "2", "3", "4", "5", "6", "7", '8', "9", "10", "11"];
+                        }
+                        else {
+                            this.hours = [];
                         }
                         if (!borderImage) return [3 /*break*/, 2];
                         _c = this;
@@ -436,6 +442,22 @@ var Clock = /** @class */ (function () {
             ctx.fill();
         }
         ctx.restore();
+    };
+    /**
+     * 更新options，调用此方法可更新模拟时钟的一些属性
+     * @param options
+     */
+    Clock.prototype.setOptions = function (options) {
+        if (options === void 0) { options = {}; }
+        var opts = {};
+        Object.keys(options).forEach(function (key) {
+            var val = options[key];
+            if (val !== undefined) { //过滤掉值为undefined的
+                opts[key] = val;
+            }
+        });
+        this.options = __assign({}, this.options, opts);
+        this.init();
     };
     /**
      * 显示一个时间

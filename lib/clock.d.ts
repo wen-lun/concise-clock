@@ -56,7 +56,7 @@ export default class Clock {
     /**表盘 */
     private dialCanvas;
     private dialCtx;
-    constructor(canvas: HTMLCanvasElement, options?: Option);
+    constructor(canvas: HTMLCanvasElement | string, options?: Option);
     private init;
     /**角度转弧度 */
     private angle2radian;
@@ -75,6 +75,11 @@ export default class Clock {
     /**绘制时针 */
     private drawHand;
     private drawNeedle;
+    /**
+     * 更新options，调用此方法可更新模拟时钟的一些属性
+     * @param options
+     */
+    setOptions(options?: Option): void;
     /**
      * 显示一个时间
      * @param time 默认值当前时间
