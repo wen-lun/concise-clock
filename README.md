@@ -1,5 +1,5 @@
 # 效果图
-<img src="img/demo1.gif" width="177"  /><img src="img/demo2.gif" width="177"  /><img src="img/demo3.gif" width="177"  /><img src="img/demo4.gif" width="177"  /><img src="img/demo5.gif" width="177"  />
+<img src="https://raw.githubusercontent.com/destiny-wenlun/concise-clock/master/img/demo1.gif" width="177"  /><img src="https://raw.githubusercontent.com/destiny-wenlun/concise-clock/master/img/demo2.gif" width="177"  /><img src="https://raw.githubusercontent.com/destiny-wenlun/concise-clock/master/img/demo3.gif" width="177"  /><img src="https://raw.githubusercontent.com/destiny-wenlun/concise-clock/master/img/demo4.gif" width="177"  /><img src="https://raw.githubusercontent.com/destiny-wenlun/concise-clock/master/img/demo5.gif" width="177"  />
 
 # 更新日志
 >1、size默认值修改为300  
@@ -16,7 +16,7 @@ new Clock(document.getElementById("canvas")).run();
 ```
 * 效果  
 <br/>
-<img src="img/demo1.gif" width="300"  />
+<img src="https://raw.githubusercontent.com/destiny-wenlun/concise-clock/master/img/demo1.gif" width="300"  />
 
 ## 2.2 显示罗马数字
 * 代码
@@ -25,7 +25,7 @@ new Clock(document.getElementById("canvas"), {scaleType: "roman"}).run();
 ```
 * 效果  
 <br/>
-<img src="img/demo2.gif" width="300"  />
+<img src="https://raw.githubusercontent.com/destiny-wenlun/concise-clock/master/img/demo2.gif" width="300"  />
 
 ## 2.3 自定义边框颜色、背景色、刻度线颜色以及小时数字颜色
 * 代码
@@ -42,7 +42,7 @@ new Clock(
 ```
 * 效果
 <br/>
-<img src="img/demo3.gif" width="300"  />
+<img src="https://raw.githubusercontent.com/destiny-wenlun/concise-clock/master/img/demo3.gif" width="300"  />
 
 ## 2.4 自定义边框图片、背景图片
 * 代码1
@@ -68,8 +68,8 @@ new Clock(
 * 效果
 <br/>
 <div>
-    <img src="img/demo4.gif" width="300" />
-    <img src="img/demo5.gif" width="300" />
+    <img src="https://raw.githubusercontent.com/destiny-wenlun/concise-clock/master/img/demo4.gif" width="300" />
+    <img src="https://raw.githubusercontent.com/destiny-wenlun/concise-clock/master/img/demo5.gif" width="300" />
 </div>
 
 # 3.参数
