@@ -350,7 +350,7 @@ export default class Clock {
             ctx.arc(0, 0, 3, 0, 2 * Math.PI);
             ctx.fill();
             ctx.beginPath();
-            //时针针尾圆点
+            //秒针针尾圆点
             const { x, y } = this.polarCoordinates2canvasCoordinates(len - 10, radian);
             ctx.arc(x, y, 2, 0, 2 * Math.PI);
             ctx.fill();
