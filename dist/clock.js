@@ -187,6 +187,9 @@ var Clock = /** @class */ (function () {
                         this.secondHandLen = this.headLen * 12;
                         this.minuteHandLen = this.headLen * 10;
                         this.hourHandLen = this.headLen * 7;
+                        //平移坐标轴，将左上角的(0,0)点平移到画布中心。
+                        this.ctx.translate(this.halfSize, this.halfSize);
+                        this.dialCtx.translate(this.halfSize, this.halfSize);
                         if ("roman" == scaleType) {
                             this.hours = ["XII", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI"];
                         }
@@ -219,25 +222,19 @@ var Clock = /** @class */ (function () {
             });
         });
     };
-    /**角度转弧度 */
-    Clock.prototype.angle2radian = function (angle) {
-        return (Math.PI / 180) * angle;
-    };
     /**
-     * 极坐标转画布坐标（ps:此极坐标极轴水平向上，角度正方向顺时针）
-     * @param r 当前点到中心点的长度
+     * 极坐标转平移后画布坐标
+     * ps:极坐标极轴水平向上，角度正方向顺时针
+     * ps:画布坐标是平移后的画布坐标，坐标原点画布中心，x轴水平向右，y轴竖直向下
+     * @param r 当前点到原点的长度
      * @param radian 弧度
      */
     Clock.prototype.polarCoordinates2canvasCoordinates = function (r, radian) {
-        //极轴水平向上极坐标转极轴水平向右极坐标
+        //极轴竖直向上极坐标 转 极轴水平向右极坐标
         radian -= Math.PI * 0.5; //角度向右旋转90度即可
-        //极轴水平向右极坐标转直角坐标（x轴水平向右，y轴竖直向下）
+        //极轴水平向右极坐标转平移后画布坐标（x轴水平向右，y轴竖直向下）
         var x = r * Math.cos(radian);
         var y = r * Math.sin(radian);
-        //直角坐标转画布坐标
-        var halfSize = this.halfSize;
-        x = x + halfSize;
-        y = y + halfSize;
         return { x: x, y: y };
     };
     /**绘制小时的文字 */
@@ -332,8 +329,8 @@ var Clock = /** @class */ (function () {
         var shadowOffset = 5;
         //--------外圈
         ctx.save();
-        var x = halfSize;
-        var y = halfSize;
+        var x = 0;
+        var y = 0;
         var outsideR = halfSize - padding - (showShadow ? shadowBlur + shadowOffset : 0);
         ctx.arc(x, y, outsideR, 0, 2 * Math.PI, true);
         if (borderImage && this.borderPattern) { //边框背景图
@@ -364,7 +361,7 @@ var Clock = /** @class */ (function () {
             ctx.clip(); //按内圈区域裁剪图片
             //最小的一边要刚好能显示完全 ,r * 2直径
             var scale = r * 2 / Math.min(width, height);
-            ctx.drawImage(this.backgroundImage, halfSize - r, halfSize - r, width * scale, height * scale);
+            ctx.drawImage(this.backgroundImage, -r, -r, width * scale, height * scale);
         }
         else if ("white" != backgroundColor) { //背景色，若背景色是白色，就不必填充，因为原本就是白色，并且不填充可以渲染出内阴影效果
             ctx.arc(x, y, insideR, 0, 2 * Math.PI);
@@ -372,21 +369,21 @@ var Clock = /** @class */ (function () {
             ctx.fill();
         }
         ctx.restore();
-        //--------刻度
-        var step = 360 / 60; //中心点转动的角度
-        //顺时针，0度(12点)递增到 360度(也是12点)
-        var hourStep = 0;
-        for (var angle = 0; angle < 360; angle += step) {
-            var radian = this.angle2radian(angle);
+        //--------刻度线和刻度值
+        //一圈被分成60份，每一份的度数是360/60=6度，转换为弧度(Math.PI/180)*6=Math.PI/30
+        var unit = Math.PI / 30;
+        for (var scale = 0; scale < 60; scale++) { //从12点到11点59秒顺时针            
+            var radian = unit * scale;
             var start = this.polarCoordinates2canvasCoordinates(insideR, radian);
-            var len = 0 == angle % 5 ? this.largeScale : this.smallScale;
+            var len = 0 == scale % 5 ? this.largeScale : this.smallScale;
             var end = this.polarCoordinates2canvasCoordinates(insideR - len, radian);
             ctx.beginPath();
             ctx.save();
-            if (0 == angle % 5) {
+            if (0 == scale % 5) {
                 ctx.lineWidth = 3;
                 if (hours && hours.length == 12) {
-                    this.drawHours(ctx, hourStep, hours[hourStep++], end);
+                    var hourIndex = scale / 5;
+                    this.drawHours(ctx, hourIndex, hours[hourIndex], end);
                 }
             }
             else {
@@ -404,17 +401,17 @@ var Clock = /** @class */ (function () {
         if (time === void 0) { time = new Date(); }
         var _a = this.options, secondHandColor = _a.secondHandColor, minuteHandColor = _a.minuteHandColor, hourHandColor = _a.hourHandColor;
         /*
-        * 一圈被分、秒成分了60份，每一份的度数为:360/60=6度
-        * 一圈被时成了12份，每一份的度数为:360/12=30度
+        * 一圈被分、秒成分了60份，每一份的度数为:6度 转换成弧度:Math.PI/30
+        * 一圈被时成了12份，每一份的度数为:30度 转换成弧度:Math.PI/6
         * 分针每走完一圈，时针就会慢慢过度到一个大刻度，
-        * 那么分针每走一个小刻度，时针在每个大刻度(大刻度之间的度数为30度)之间过度的角度为：30/60 = 0.5度
+        * 那么分针每走一个小刻度，时针在每个大刻度(大刻度之间的度数为30度)之间过度的角度为：30/60 = 0.5度 转换成弧度：Math.PI/360
         */
-        this.drawNeedle(ctx, time.getHours() * 30 + time.getMinutes() * 0.5, hourHandColor, this.hourHandLen);
-        this.drawNeedle(ctx, time.getMinutes() * 6, minuteHandColor, this.minuteHandLen);
-        this.drawNeedle(ctx, time.getSeconds() * 6, secondHandColor, this.secondHandLen);
+        this.drawNeedle(ctx, time.getHours() * Math.PI / 6 + time.getMinutes() * Math.PI / 360, hourHandColor, this.hourHandLen);
+        this.drawNeedle(ctx, time.getMinutes() * Math.PI / 30, minuteHandColor, this.minuteHandLen);
+        this.drawNeedle(ctx, time.getSeconds() * Math.PI / 30, secondHandColor, this.secondHandLen);
     };
-    Clock.prototype.drawNeedle = function (ctx, angle, color, len) {
-        var radian = this.angle2radian(angle);
+    /**绘制指针 */
+    Clock.prototype.drawNeedle = function (ctx, radian, color, len) {
         var start = this.polarCoordinates2canvasCoordinates(-this.headLen, radian);
         var end = this.polarCoordinates2canvasCoordinates(len, radian);
         ctx.beginPath();
@@ -433,7 +430,7 @@ var Clock = /** @class */ (function () {
             ctx.beginPath();
             ctx.fillStyle = color;
             //表盘中心圆点
-            ctx.arc(this.halfSize, this.halfSize, 3, 0, 2 * Math.PI);
+            ctx.arc(0, 0, 3, 0, 2 * Math.PI);
             ctx.fill();
             ctx.beginPath();
             //时针针尾圆点
@@ -466,7 +463,7 @@ var Clock = /** @class */ (function () {
     Clock.prototype.show = function (time) {
         var _a = this.options, size = _a.size, borderImage = _a.borderImage, backgroundImage = _a.backgroundImage;
         var _b = this, ctx = _b.ctx, hourFontSize = _b.hourFontSize;
-        this.ctx.clearRect(0, 0, size, size);
+        this.ctx.clearRect(-this.halfSize, -this.halfSize, size, size);
         if ((borderImage && !this.borderPattern) || (backgroundImage && !this.backgroundImage)) {
             ctx.save();
             ctx.font = hourFontSize + "px \u5FAE\u8F6F\u96C5\u9ED1";
@@ -475,7 +472,7 @@ var Clock = /** @class */ (function () {
             return;
         }
         //表盘
-        ctx.drawImage(this.dialCanvas, 0, 0);
+        ctx.drawImage(this.dialCanvas, -this.halfSize, -this.halfSize);
         if ("string" == typeof time) {
             if (!/^\d{1,2}(:\d{1,2}){2}$/.test(time)) {
                 throw new Error("参数格式：HH:mm:ss");

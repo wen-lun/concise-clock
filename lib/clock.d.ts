@@ -58,11 +58,11 @@ export default class Clock {
     private dialCtx;
     constructor(canvas: HTMLCanvasElement | string, options?: Option);
     private init;
-    /**角度转弧度 */
-    private angle2radian;
     /**
-     * 极坐标转画布坐标（ps:此极坐标极轴水平向上，角度正方向顺时针）
-     * @param r 当前点到中心点的长度
+     * 极坐标转平移后画布坐标
+     * ps:极坐标极轴水平向上，角度正方向顺时针
+     * ps:画布坐标是平移后的画布坐标，坐标原点画布中心，x轴水平向右，y轴竖直向下
+     * @param r 当前点到原点的长度
      * @param radian 弧度
      */
     private polarCoordinates2canvasCoordinates;
@@ -74,6 +74,7 @@ export default class Clock {
     private drawDial;
     /**绘制时针 */
     private drawHand;
+    /**绘制指针 */
     private drawNeedle;
     /**
      * 更新options，调用此方法可更新模拟时钟的一些属性
