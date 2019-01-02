@@ -1,11 +1,12 @@
 # 效果图
-<img src="https://raw.githubusercontent.com/destiny-wenlun/concise-clock/master/img/demo1.gif" width="177"  /><img src="https://raw.githubusercontent.com/destiny-wenlun/concise-clock/master/img/demo2.gif" width="177"  /><img src="https://raw.githubusercontent.com/destiny-wenlun/concise-clock/master/img/demo3.gif" width="177"  /><img src="https://raw.githubusercontent.com/destiny-wenlun/concise-clock/master/img/demo4.gif" width="177"  /><img src="https://raw.githubusercontent.com/destiny-wenlun/concise-clock/master/img/demo5.gif" width="177"  />
+<img src="https://raw.githubusercontent.com/destiny-wenlun/concise-clock/master/img/demo1.gif" width="177"  /><img src="https://raw.githubusercontent.com/destiny-wenlun/concise-clock/master/img/demo2.gif" width="177"  /><img src="https://raw.githubusercontent.com/destiny-wenlun/concise-clock/master/img/demo3.gif" width="177"  /><img src="https://raw.githubusercontent.com/destiny-wenlun/concise-clock/master/img/demo4.gif" width="177"  /><img src="https://raw.githubusercontent.com/destiny-wenlun/concise-clock/master/img/demo5.gif" width="177"  /><img src="https://raw.githubusercontent.com/destiny-wenlun/concise-clock/master/img/demo6.gif" width="177"  />
 
 # 更新日志
 
 >1、构造方法第一个参数支持传入canvas dom对象的id，既可以传canvas dom对象也可以传此dom对象的id。  
 >2、增加setOptions方法，方便动态更新模拟时钟的属性。  
->3、修复传入options没有验证属性值的BUG，若传入的options的某些属性是undefined，那么就过滤掉该属性。
+>3、修复传入options没有验证属性值的BUG，若传入的options的某些属性是undefined，那么就过滤掉该属性。  
+>4、options新增handType指针类型，有line(线条)或triangle(三角形)两个可选值，默认triangle
 
 # 1.安装
 * &lt;script&gt;标签引入"dist/clock.js"或"dist/clock.min.js"
@@ -84,27 +85,27 @@ new Clock(
 * canvas：用来显示模拟时钟的容器。可以是一个HTMLCanvasElement对象，也可以是一个HTMLCanvasElement对象的id。
 + options：options有默认值，可不传，但如果你想自定义一些漂亮的样式，就可以使用options参数。
 ## 3.2 options默认值
-```javascript
-{
-    size: 300,//模拟时钟尺寸(px)
-    padding: 5,//内边距
-    borderWidth: 15,//边框宽度
-    borderColor: "black",//边框颜色
-    borderImage: undefined,//边框图，优先级高于borderColor
-    scaleType: "arabic",//刻度值类型(arabic、roman、none),arabic:阿拉伯数字;roman:罗马数字; none:不显示;
-    scaleColor: "#666",//刻度线颜色
-    hourColor: "#666",//刻度值颜色
-    backgroundColor: "white",//背景色
-    backgroundImage: undefined,//背景图，优先级高于backgroundColor
-    secondHandColor: "red",//秒针颜色
-    minuteHandColor: "#666",//分针颜色
-    hourHandColor: "black",//时针颜色
-    backgroundMode: "full",//背景图显示模式
-    backgroundAlpha: 0.5,//背景色透明度
-    showShadow: true,//是否显示阴影
-    onload: undefined,//图片加载完成回调，回调参数当前Clock对象
-}
-```
+|属性|说明|类型|默认值|
+|:-|:-|:-|:-|
+|size|模拟时钟大小|Number|300|
+|padding|内边距|Number|5|
+|borderWidth|边框宽度|Number|15|
+|borderColor|边框颜色|String|black|
+|borderImage|边框背景图片，优先级高于borderColor|String|-|
+|backgroundColor|背景色|String|white|
+|backgroundImage|背景图片，优先级高于backgroundColor|String|-|
+|backgroundMode|背景图显示模式,可选值part或full|String|full|
+|backgroundAlpha|背景图片的透明度|Number|0.5|
+|scaleType|显示的刻度类型，roman：罗马数字，arabic：阿拉伯数字，none：不显示|String|arabic|
+|scaleColor|刻度线颜色|String|#666|
+|hourColor|刻度值颜色|String|#666|
+|handType|指针类型|line \| triangle|triangle|
+|secondHandColor|秒针颜色|String|red|
+|minuteHandColor|分针颜色|String|#666|
+|hourHandColor|时针颜色|String|black|
+|showShadow|时针颜色|Boolean|true|
+|onload|图片加载完成回调，回调参数当前Clock对象|Function|-|
+
 # 4.对象方法
 * show(time): 用来显示一个时间，可以是Date对象，也可以是形如"hh:mm:ss"的字符串，此的方法返回值是当前对象。例如:
 ```javascript
