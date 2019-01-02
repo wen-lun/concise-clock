@@ -15,6 +15,7 @@ export default class Clock {
             hourHandColor: "black",
             backgroundMode: "full",
             showShadow: true,
+            handType: "triangle",
             backgroundAlpha: 0.5,
         };
         this.interval = null;
@@ -273,33 +274,63 @@ export default class Clock {
     }
     /**绘制指针 */
     drawNeedle(ctx, radian, color, len) {
-        const start = this.polarCoordinates2canvasCoordinates(-this.headLen, radian);
-        const end = this.polarCoordinates2canvasCoordinates(len, radian);
-        ctx.beginPath();
-        ctx.save();
-        ctx.moveTo(start.x, start.y);
-        ctx.lineTo(end.x, end.y);
-        ctx.strokeStyle = color;
-        if (len == this.hourHandLen) {
-            ctx.lineWidth = 3;
-        }
-        else if (len == this.minuteHandLen) {
-            ctx.lineWidth = 2;
-        }
-        ctx.stroke();
-        if (len == this.secondHandLen) {
+        let { handType } = this.options;
+        if ("triangle" == handType) { //三角形类型指针
+            const end = this.polarCoordinates2canvasCoordinates(len, radian);
+            const needleWidth = 6;
+            const left = this.polarCoordinates2canvasCoordinates(needleWidth, radian - 0.5 * Math.PI);
+            const right = this.polarCoordinates2canvasCoordinates(needleWidth, radian + 0.5 * Math.PI);
             ctx.beginPath();
+            ctx.save();
+            ctx.moveTo(end.x, end.y);
+            ctx.lineTo(left.x, left.y);
+            ctx.lineTo(right.x, right.y);
+            ctx.closePath();
             ctx.fillStyle = color;
-            //表盘中心圆点
-            ctx.arc(0, 0, 3, 0, 2 * Math.PI);
+            ctx.shadowBlur = 5;
+            ctx.shadowColor = "#666";
+            ctx.shadowOffsetX = 2;
+            ctx.shadowOffsetY = 2;
             ctx.fill();
-            ctx.beginPath();
-            //时针针尾圆点
-            const { x, y } = this.polarCoordinates2canvasCoordinates(len - 10, radian);
-            ctx.arc(x, y, 2, 0, 2 * Math.PI);
-            ctx.fill();
+            if (len == this.secondHandLen) {
+                ctx.beginPath();
+                //表盘中心圆点
+                ctx.beginPath();
+                ctx.fillStyle = "yellow";
+                ctx.arc(0, 0, needleWidth + 2, 0, 2 * Math.PI);
+                ctx.fill();
+            }
+            ctx.restore();
         }
-        ctx.restore();
+        else { //线条类型指针
+            const start = this.polarCoordinates2canvasCoordinates(this.headLen, radian - Math.PI);
+            const end = this.polarCoordinates2canvasCoordinates(len, radian);
+            ctx.beginPath();
+            ctx.save();
+            ctx.moveTo(start.x, start.y);
+            ctx.lineTo(end.x, end.y);
+            ctx.strokeStyle = color;
+            if (len == this.hourHandLen) {
+                ctx.lineWidth = 3;
+            }
+            else if (len == this.minuteHandLen) {
+                ctx.lineWidth = 2;
+            }
+            ctx.stroke();
+            if (len == this.secondHandLen) {
+                ctx.beginPath();
+                ctx.fillStyle = color;
+                //表盘中心圆点
+                ctx.arc(0, 0, 3, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.beginPath();
+                //秒针针尾圆点
+                const { x, y } = this.polarCoordinates2canvasCoordinates(len - 10, radian);
+                ctx.arc(x, y, 2, 0, 2 * Math.PI);
+                ctx.fill();
+            }
+            ctx.restore();
+        }
     }
     /**
      * 更新options，调用此方法可更新模拟时钟的一些属性
