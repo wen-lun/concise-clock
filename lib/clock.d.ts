@@ -23,6 +23,8 @@ interface Option {
     scaleColor?: string;
     /**显示的小时文字颜色 */
     hourColor?: string;
+    /**指针类型 line:线条 triangle:三角形 */
+    handType?: "line" | "triangle";
     /**秒针颜色 */
     secondHandColor?: string;
     /**分针颜色 */
